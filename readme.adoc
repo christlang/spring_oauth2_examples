@@ -49,4 +49,10 @@ spring init --dependencies=web,thymeleaf,oauth2-client,devtools --package-name d
 cd ServiceA
 # adjust application.yml
 mvn spring-boot:run
+
+
+spring init --dependencies=web,thymeleaf,oauth2-client,devtools,oauth2-resource-server --package-name de.synyx.cl.oauth.examples.service.b ServiceD
+cd ServiceB
+# adjust application.yml
+mvn spring-boot:run
 ----
