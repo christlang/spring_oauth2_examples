@@ -1,0 +1,29 @@
+
+Example Apps for oauth-spring-keycloak-integrations
+
+=== Start Keycloak and Configure
+
+[source,shell]
+----
+# start
+docker-compose down --remove-orphans && docker-compose up keycloak
+
+# configure
+docker run                                              \
+  -e KEYCLOAK_URL=http://host.docker.internal:8080/auth \
+  -e KEYCLOAK_SSL-VERIFY=true                           \
+  -e KEYCLOAK_USER=admin                                \
+  -e KEYCLOAK_PASSWORD=admin123                         \
+  -e IMPORT_PATH=/config/example-realm.yml              \
+  -e IMPORT_FORCE=false                                 \
+  -v $PWD/keycloak_config:/config                       \
+  --add-host=host.docker.internal:host-gateway          \
+  adorsys/keycloak-config-cli:v4.0.1-11.0.3
+
+#
+browser localhost:8080/auth/
+# admin / admin123
+
+browser http://localhost:8080/auth/realms/example/account
+# test / test
+----

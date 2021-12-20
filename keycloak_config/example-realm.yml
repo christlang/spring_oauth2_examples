@@ -1,0 +1,67 @@
+enabled: true
+realm: example
+roles:
+  realm:
+    - name: role_a
+      description: role_a
+      composite: false
+      clientRole: false
+  client:
+    service_a:
+      - name: client_service_a_role_a
+        description: client_service_a_role_a
+        composite: false
+        clientRole: true
+clients:
+  - clientId: service_a
+    name: service_a
+    description: testing description
+    enabled: true
+    clientAuthenticatorType: client-secret
+    secret: 7f7367d1-f394-4a98-af5b-6c11886ff26f
+    redirectUris:
+      - "*"
+    webOrigins:
+      - "*"
+clientScopes:
+  - name: roles
+    protocolMappers:
+      - id: client roles id
+        name: client roles
+        protocol: openid-connect
+        protocolMapper: oidc-usermodel-client-role-mapper
+        config:
+          multivalued: 'true'
+          claim.name: resource_access.${client_id}.roles
+          access.token.claim: 'true'
+          id.token.claim: 'true'
+          userinfo.token.claim: 'false'
+          jsonType.label: String
+      - id: realm roles id
+        name: realm roles
+        protocol: openid-connect
+        protocolMapper: oidc-usermodel-realm-role-mapper
+        config:
+          multivalued: 'true'
+          claim.name: realm_access.roles
+          access.token.claim: 'true'
+          id.token.claim: 'true'
+          userinfo.token.claim: 'false'
+          jsonType.label: String
+users:
+  - username: test
+    email: test@test.de
+    enabled: true
+    firstName: first test
+    lastName: last test
+    attributes:
+      locale:
+        - de
+    credentials:
+      - type: password
+        value: test
+    realmRoles:
+      - role_a
+    clientRoles:
+      service_a:
+        - client_service_a_role_a
