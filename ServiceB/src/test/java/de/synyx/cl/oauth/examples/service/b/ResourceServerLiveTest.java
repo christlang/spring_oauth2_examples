@@ -1,23 +1,61 @@
 package de.synyx.cl.oauth.examples.service.b;
 
 import io.restassured.RestAssured;
-import io.restassured.path.json.config.JsonPathConfig;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ResourceServerLiveTest {
 
+    public static final String baseUrl = "http://localhost:8082";
     private final String redirectUrl = "http://localhost:8084/";
     private final String authorizeUrlPattern = "http://localhost:8080/auth/realms/example/protocol/openid-connect/auth?response_type=code&client_id=service_a&scope=%s&redirect_uri=" + redirectUrl;
     private final String tokenUrl = "http://localhost:8080/auth/realms/example/protocol/openid-connect/token";
+
+
+    public OAuth2ProtectedResourceDetails details() {
+        AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
+        details.setId("client_id");
+        details.setClientId("service_a");
+        details.setClientSecret("7f7367d1-f394-4a98-af5b-6c11886ff26f");
+        details.setAccessTokenUri(tokenUrl);
+        details.setUserAuthorizationUri(tokenUrl);
+        return details;
+    }
+
+    @Test
+    void testOAuthRestTemplate() {
+        ResourceOwnerPasswordResourceDetails resource = new ResourceOwnerPasswordResourceDetails();
+        resource.setAccessTokenUri(tokenUrl);
+        resource.setId("service_a");
+        resource.setClientId("service_a");
+        resource.setClientSecret("7f7367d1-f394-4a98-af5b-6c11886ff26f");
+
+        resource.setGrantType("client_credentials");
+
+        resource.setScope(Arrays.asList("openid"));
+
+        OAuth2RestTemplate template = new OAuth2RestTemplate(resource);
+        System.out.println(" CALLING: " + baseUrl+"/api");
+
+        String result = template.getForObject(baseUrl+"/api", String.class);
+
+        System.err.println(result);
+        assertEquals("Hello, Trusted User marissa", result);
+    }
 
     @Test
     void testRestAssured() {
@@ -38,7 +76,7 @@ class ResourceServerLiveTest {
                 .redirects().follow(false)
                 .header(HttpHeaders.ACCEPT, "application/json")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-                .get("http://localhost:8082/api");
+                .get(baseUrl + "/api");
 
         api.then()
                 .statusCode(200)

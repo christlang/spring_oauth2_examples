@@ -1,6 +1,17 @@
 
 server:
   port: 8081
+
+example:
+  baseUrl: http://localhost:8080
+  oauth2:
+    client:
+      grantType: client_credentials
+      clientId: service_a
+      clientSecret: 7f7367d1-f394-4a98-af5b-6c11886ff26f
+      accessTokenUri: http://localhost:8080/auth/realms/example/protocol/openid-connect/token
+      #scope: custom_mod
+
 spring:
   security:
     oauth2:

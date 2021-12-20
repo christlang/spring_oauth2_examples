@@ -1,10 +1,10 @@
 package de.synyx.cl.oauth.examples.service.b;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,10 +18,16 @@ public class ServiceBController {
     }
 
     @GetMapping("/info")
-    public Map<String, Object> getUserInfo(@AuthenticationPrincipal Jwt principal) {
+    public Map<String, Object> getUserInfo(Principal principal) {
+
         Map<String, String> map = new HashMap<>();
-        map.put("user_name", principal.getClaimAsString("preferred_username"));
-        map.put("organization", principal.getClaimAsString("organization"));
+        if (principal instanceof JwtAuthenticationToken) {
+            JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) principal;
+            map.put("clientId", jwtToken.getTokenAttributes().get("clientId").toString());
+        }
+
+        map.put("name", principal.getName());
+
         return Collections.unmodifiableMap(map);
     }
 }
