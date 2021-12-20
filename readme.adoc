@@ -1,6 +1,15 @@
 
 Example Apps for oauth-spring-keycloak-integrations
 
+=== Overview
+
+Ports:
+
+* keycloak - 8080
+* ServiceA - 8081
+* ServiceB - 8082
+
+
 === Start Keycloak and Configure
 
 [source,shell]
@@ -26,4 +35,18 @@ browser localhost:8080/auth/
 
 browser http://localhost:8080/auth/realms/example/account
 # test / test
+----
+
+=== Create Spring Example apps
+
+* Spring Boot CLI - https://docs.spring.io/spring-boot/docs/current/reference/html/cli.html
+
+[source,shell]
+----
+# using spring cli
+# more info: spring init --list
+spring init --dependencies=web,thymeleaf,oauth2-client,devtools --package-name de.synyx.cl.oauth.examples.service.a ServiceA
+cd ServiceA
+# adjust application.yml
+mvn spring-boot:run
 ----

@@ -1,0 +1,26 @@
+
+server:
+  port: 8081
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-name: Service A
+            client-id: service_a
+            client-secret: 7f7367d1-f394-4a98-af5b-6c11886ff26f
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, profile, email, roles
+        provider:
+          # https://docs.spring.io/spring-boot/docs/2.1.6.RELEASE/reference/html/boot-features-security.html
+          # url to .well-known/openid-configuration
+          keycloak:
+            issuer-uri: http://localhost:8080/auth/realms/example
+            token-uri: http://localhost:8080/auth/realms/example/protocol/openid-connect/token
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+

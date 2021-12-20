@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <title>Home</title>
+</head>
+<body>
+<h1>Info</h1>
+<ul>
+    <li th:each="info: ${infos}">
+        <span th:text="${info}" />
+    </li>
+</ul>
+</body>
+</html>
