@@ -1,0 +1,18 @@
+
+server:
+  port: 8082
+
+# https://www.baeldung.com/spring-security-oauth-jwt
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/example
+          jwk-set-uri: http://localhost:8080/auth/realms/example/protocol/openid-connect/certs
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+

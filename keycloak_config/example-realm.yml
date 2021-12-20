@@ -23,6 +23,7 @@ clients:
       - "*"
     webOrigins:
       - "*"
+    serviceAccountsEnabled: true
 clientScopes:
   - name: roles
     protocolMappers:

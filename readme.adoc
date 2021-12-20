@@ -56,3 +56,16 @@ cd ServiceB
 # adjust application.yml
 mvn spring-boot:run
 ----
+
+
+=== Client Credentials Grant Flow
+
+----
+curl --request POST \
+  --url 'http://localhost:8080/auth/realms/example/protocol/openid-connect/token' \
+  --header 'content-type: application/x-www-form-urlencoded' \
+  --data grant_type=client_credentials \
+  --data client_id=service_a \
+  --data client_secret=7f7367d1-f394-4a98-af5b-6c11886ff26f \
+  --data audience=client_b
+----
