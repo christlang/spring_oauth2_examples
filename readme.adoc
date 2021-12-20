@@ -9,6 +9,8 @@ Ports:
 * ServiceA - 8081
 * ServiceB - 8082
 
+image::overview.png[overview]
+
 
 === Start Keycloak and Configure
 
