@@ -74,7 +74,8 @@ curl --request POST \
 
 === Dependency-Updates (renovate)
 
-* https://github.com/Sebberh/RenovateTutorial
+* Tutorial: https://github.com/Sebberh/RenovateTutorial
+* Options: https://docs.renovatebot.com/configuration-options/
 
 * Klick Configure on: https://github.com/apps/renovate
 * Activate
