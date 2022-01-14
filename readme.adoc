@@ -71,3 +71,13 @@ curl --request POST \
   --data client_secret=7f7367d1-f394-4a98-af5b-6c11886ff26f \
   --data audience=client_b
 ----
+
+=== Dependency-Updates (renovate)
+
+* https://github.com/Sebberh/RenovateTutorial
+
+* Klick Configure on: https://github.com/apps/renovate
+* Activate
+* open Pull Request "Configure Renovate"
+* merge the PR
+* configure renovate in renovate.json
