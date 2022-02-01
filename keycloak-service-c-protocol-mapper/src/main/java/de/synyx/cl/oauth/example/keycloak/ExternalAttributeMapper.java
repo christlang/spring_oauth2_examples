@@ -74,7 +74,7 @@ public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implemen
     protected void setClaim(IDToken token, ProtocolMapperModel mappingModel, UserSessionModel userSession, KeycloakSession keycloakSession, ClientSessionContext clientSessionCtx) {
         // adds our data to the token. Uses the parameters like the claim name which were set by the user
         // when this protocol mapper was configured in keycloak. Note that the parameters which can
-        // be configured in keycloak for this protocol mapper were set in the static intializer of this class.
+        // be configured in keycloak for this protocol mapper were set in the static initializer of this class.
         //
         // Sets a static "Hello world" string, but we could write a dynamic value like a group attribute here too.
         OIDCAttributeMapperHelper.mapClaim(token, mappingModel, "hello world");
