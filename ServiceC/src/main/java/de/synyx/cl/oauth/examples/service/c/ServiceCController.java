@@ -16,10 +16,13 @@ public class ServiceCController {
 
     private final Logger log = LoggerFactory.getLogger(ServiceCController.class);
 
+    // http://192.168.178.37:8083/api?userEmail=lange%2B2@synyx.de
     @GetMapping("/api")
-    public Map<String, Boolean> api(Principal principal) {
+    public Map<String, Boolean> api(String userEmail, Principal principal) {
         log.info("principal {}", principal.toString());
         log.info("name {}", principal.getName());
+        log.info("email {}", userEmail);
+
 
         Map<String, Boolean> map = new HashMap<>();
         map.put("rightA", true);
