@@ -5,6 +5,7 @@ services:
     environment:
       KEYCLOAK_PASSWORD: admin123
       KEYCLOAK_USER: admin
+      DB_VENDOR: h2
       KEYCLOAK_LOGLEVEL: INFO
       ROOT_LOGLEVEL: INFO
     ports:
