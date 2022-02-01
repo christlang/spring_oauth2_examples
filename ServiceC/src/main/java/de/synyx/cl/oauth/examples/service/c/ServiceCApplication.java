@@ -1,13 +1,13 @@
-package de.synyx.cl.oauth.examples.service.b;
+package de.synyx.cl.oauth.examples.service.c;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ServiceBApplication {
+public class ServiceCApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ServiceBApplication.class, args);
+		SpringApplication.run(ServiceCApplication.class, args);
 	}
 
 }

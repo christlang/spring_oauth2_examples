@@ -1,4 +1,4 @@
-package de.synyx.cl.oauth.examples.service.b;
+package de.synyx.cl.oauth.examples.service.c;
 
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ServiceBController {
+public class ServiceCController {
 
     @GetMapping("/api")
     public String api() {
@@ -23,7 +23,7 @@ public class ServiceBController {
         Map<String, String> map = new HashMap<>();
         if (principal instanceof JwtAuthenticationToken) {
             JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) principal;
-            map.put("clientId", jwtToken.getTokenAttributes().get("clientId").toString());
+            map.put("clientId", jwtToken.getTokenAttributes().get("azp").toString());
         }
 
         map.put("name", principal.getName());
