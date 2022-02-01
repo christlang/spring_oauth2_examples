@@ -33,6 +33,18 @@ clients:
     webOrigins:
       - "*"
     serviceAccountsEnabled: true
+    protocolMappers:
+      - id: test protocol mapper id
+        name: test protocol mapper
+        protocol: openid-connect
+        protocolMapper: oidc-service-c-protocol-mapper
+        config:
+          claim.name: test_claim
+          access.token.claim: 'true'
+          id.token.claim: 'true'
+          userinfo.token.claim: 'false'
+          jsonType.label: String
+
 clientScopes:
   - name: roles
     protocolMappers:
