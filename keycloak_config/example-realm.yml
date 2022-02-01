@@ -24,6 +24,15 @@ clients:
     webOrigins:
       - "*"
     serviceAccountsEnabled: true
+  - clientId: ProtocolMapperTestClient
+    name: ProtocolMapperTestClient
+    clientAuthenticatorType: client-secret
+    secret: hWOVZkbeBx8Vl1oFp80UIBcdaEXsRGbA
+    redirectUris:
+      - "*"
+    webOrigins:
+      - "*"
+    serviceAccountsEnabled: true
 clientScopes:
   - name: roles
     protocolMappers:

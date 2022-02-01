@@ -1,13 +1,16 @@
 
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION}
+    image: jboss/keycloak:16.1.0
+    container_name: keycloak
     environment:
-      KEYCLOAK_PASSWORD: admin123
+      KEYCLOAK_PASSWORD: admin
       KEYCLOAK_USER: admin
       DB_VENDOR: h2
       KEYCLOAK_LOGLEVEL: INFO
       ROOT_LOGLEVEL: INFO
+      DEBUG: 'true'
+      DEBUG_PORT: '*:8787'
     ports:
       - "8080:8080"
       - "8787:8787"
@@ -15,3 +18,32 @@ services:
       - "-c"
       - "standalone.xml"
       - "-Dkeycloak.profile.feature.upload_scripts=enabled"
+    healthcheck:
+      test: curl -f http://localhost:9990 || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  keycloak-cfg:
+    image: adorsys/keycloak-config-cli:v4.6.1-16.1.0
+    container_name: keycloak-cfg
+    volumes:
+      - ./keycloak_config:/config
+    environment:
+      KEYCLOAK_URL: http://keycloak:8080/auth
+      KEYCLOAK_SSL-VERIFY: "true"
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      IMPORT_PATH: /config/example-realm.yml
+      IMPORT_FORCE: "false"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"

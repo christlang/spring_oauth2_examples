@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * inspired by https://github.com/mschwartau/keycloak-custom-protocol-mapper-example
  */
-public class AttributeMapper extends AbstractOIDCProtocolMapper implements OIDCAccessTokenMapper, OIDCIDTokenMapper, UserInfoTokenMapper {
+public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implements OIDCAccessTokenMapper, OIDCIDTokenMapper, UserInfoTokenMapper {
 
     /*
      * A config which keycloak uses to display a generic dialog to configure the token.
@@ -42,12 +42,17 @@ public class AttributeMapper extends AbstractOIDCProtocolMapper implements OIDCA
         // this token mapper implements to decide which options to add to the config. So if this token
         // mapper should never be available for some sort of options, e.g. like the id token, just don't
         // implement the corresponding interface.
-        OIDCAttributeMapperHelper.addIncludeInTokensConfig(configProperties, AttributeMapper.class);
+        OIDCAttributeMapperHelper.addIncludeInTokensConfig(configProperties, ExternalAttributeMapper.class);
+    }
+
+    @Override
+    public List<ProviderConfigProperty> getConfigProperties() {
+        return configProperties;
     }
 
     @Override
     public String getDisplayCategory() {
-        return "Token mapper";
+        return TOKEN_MAPPER_CATEGORY;
     }
 
     @Override
@@ -58,11 +63,6 @@ public class AttributeMapper extends AbstractOIDCProtocolMapper implements OIDCA
     @Override
     public String getHelpText() {
         return "Adds information from service c to claim";
-    }
-
-    @Override
-    public List<ProviderConfigProperty> getConfigProperties() {
-        return configProperties;
     }
 
     @Override
