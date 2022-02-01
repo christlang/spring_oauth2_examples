@@ -15,9 +15,7 @@ import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.IDToken;
 import org.keycloak.services.Urls;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import javax.json.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
@@ -25,7 +23,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * inspired by https://github.com/mschwartau/keycloak-custom-protocol-mapper-example
@@ -45,11 +45,21 @@ public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implemen
      */
     public static final String PROVIDER_ID = "oidc-service-c-protocol-mapper";
 
+    private static final String URL_NAME = PROVIDER_ID + ".url";
+
     static {
         // The builtin protocol mapper let the user define under which claim name (key)
         // the protocol mapper writes its value. To display this option in the generic dialog
         // in keycloak, execute the following method.
         OIDCAttributeMapperHelper.addTokenClaimNameConfig(configProperties);
+
+        ProviderConfigProperty propertyUrl = new ProviderConfigProperty();
+        propertyUrl.setName(URL_NAME);
+        propertyUrl.setLabel("URL");
+        propertyUrl.setType(ProviderConfigProperty.STRING_TYPE);
+        propertyUrl.setHelpText("URL of the service to retrive information from");
+        configProperties.add(propertyUrl);
+
         // The builtin protocol mapper let the user define for which tokens the protocol mapper
         // is executed (access token, id token, user info). To add the config options for the different types
         // to the dialog execute the following method. Note that the following method uses the interfaces
@@ -105,14 +115,15 @@ public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implemen
         System.out.println(bearerToken);
         System.out.println("***************************************");
 
-        JsonObject attribute = getExternalAttribute(bearerToken);
+        String url = mappingModel.getConfig().get(URL_NAME);
 
+        JsonObject attributes = getExternalAttribute(url, bearerToken);
+        final Map<String, Boolean> list = convert(attributes);
 
-        OIDCAttributeMapperHelper.mapClaim(token, mappingModel, attribute);
+        OIDCAttributeMapperHelper.mapClaim(token, mappingModel, list);
     }
 
-    private JsonObject getExternalAttribute(String token) {
-        final String url = "http://192.168.178.37:8083/info";
+    private JsonObject getExternalAttribute(String url, String token) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(url))
@@ -152,4 +163,13 @@ public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implemen
         return new JWSBuilder().kid(key.getKid()).type("JWT").jsonContent(token).sign(new AsymmetricSignatureSignerContext(key));
     }
 
+    public static Map<String, Boolean> convert(JsonObject jsonObject) {
+        Map<String, Boolean> result = new HashMap<>();
+        for(String key: jsonObject.keySet()) {
+            final JsonValue jsonValue = jsonObject.get(key);
+            result.put(key, jsonValue.toString().equals("true") ? true : false);
+        };
+
+        return result;
+    }
 }

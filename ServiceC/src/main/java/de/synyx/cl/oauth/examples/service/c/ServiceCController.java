@@ -13,8 +13,12 @@ import java.util.Map;
 public class ServiceCController {
 
     @GetMapping("/api")
-    public String api() {
-        return "{\"answer\": 42}";
+    public Map<String, Boolean> api() {
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("rightA", true);
+        map.put("rightB", false);
+        map.put("rightC", true);
+        return map;
     }
 
     @GetMapping("/info")
