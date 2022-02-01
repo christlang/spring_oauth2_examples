@@ -43,7 +43,7 @@ clients:
           access.token.claim: 'true'
           id.token.claim: 'true'
           userinfo.token.claim: 'false'
-          jsonType.label: String
+          jsonType.label: JSON
 
 clientScopes:
   - name: roles

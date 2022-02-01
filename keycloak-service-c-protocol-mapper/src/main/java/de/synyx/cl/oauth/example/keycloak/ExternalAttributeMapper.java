@@ -16,6 +16,7 @@ import org.keycloak.representations.IDToken;
 import org.keycloak.services.Urls;
 
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -104,13 +105,13 @@ public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implemen
         System.out.println(bearerToken);
         System.out.println("***************************************");
 
-        String attribute = getExternalAttribute(bearerToken);
+        JsonObject attribute = getExternalAttribute(bearerToken);
 
 
         OIDCAttributeMapperHelper.mapClaim(token, mappingModel, attribute);
     }
 
-    private String getExternalAttribute(String token) {
+    private JsonObject getExternalAttribute(String token) {
         final String url = "http://192.168.178.37:8083/info";
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -124,12 +125,14 @@ public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implemen
             if (response.statusCode() != 200) {
                 throw new RuntimeException("request not successful: " + response.statusCode());
             }
-            System.out.println("response body: " + response.body());
-            JsonReader reader = Json.createReader(new StringReader(response.body()));
-            return reader.readObject().toString();
+            String body = response.body();
+
+            System.out.println("response body: " + body);
+            JsonReader reader = Json.createReader(new StringReader(body));
+            return reader.readObject();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return e.getMessage();
+            return Json.createReader(new StringReader("{\"error\": \"unknown error\"}")).readObject();
         }
     }
 

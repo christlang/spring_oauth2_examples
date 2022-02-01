@@ -23,7 +23,7 @@ public class ServiceBController {
         Map<String, String> map = new HashMap<>();
         if (principal instanceof JwtAuthenticationToken) {
             JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) principal;
-            map.put("clientId", jwtToken.getTokenAttributes().get("clientId").toString());
+            map.put("clientId", jwtToken.getTokenAttributes().get("azp").toString());
         }
 
         map.put("name", principal.getName());
