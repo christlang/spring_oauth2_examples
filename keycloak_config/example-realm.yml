@@ -24,6 +24,20 @@ clients:
     webOrigins:
       - "*"
     serviceAccountsEnabled: true
+    protocolMappers:
+      - id: 0a623cae-8396-11ec-b97f-38f3ab2c9eaf
+        name: test protocol mapper
+        protocol: openid-connect
+        protocolMapper: oidc-service-c-protocol-mapper
+        config:
+          multivalued: 'false'
+          claim.name: test_claim
+          access.token.claim: 'true'
+          id.token.claim: 'true'
+          userinfo.token.claim: 'false'
+          jsonType.label: JSON
+          oidc-service-c-protocol-mapper.url: http://192.168.178.37:8083/api
+
   - clientId: ProtocolMapperTestClient
     name: ProtocolMapperTestClient
     clientAuthenticatorType: client-secret
@@ -34,7 +48,7 @@ clients:
       - "*"
     serviceAccountsEnabled: true
     protocolMappers:
-      - id: test protocol mapper id
+      - id: 1184dfc8-8396-11ec-a55f-38f3ab2c9eaf
         name: test protocol mapper
         protocol: openid-connect
         protocolMapper: oidc-service-c-protocol-mapper
@@ -74,6 +88,7 @@ clientScopes:
           jsonType.label: String
 users:
   - username: test
+    id: f12d05a8-f8ba-420b-9c3e-320a2facda64
     email: test@test.de
     enabled: true
     firstName: first test

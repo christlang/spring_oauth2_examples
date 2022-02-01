@@ -112,6 +112,10 @@ public class ExternalAttributeMapper extends AbstractOIDCProtocolMapper implemen
         KeyWrapper key = keycloakSession.keys().getActiveKey(keycloakSession.getContext().getRealm(), KeyUse.SIG, "RS256");
         String bearerToken = new JWSBuilder().kid(key.getKid()).type("JWT").jsonContent(token).sign(new AsymmetricSignatureSignerContext(key));
         System.out.println("2:");
+        System.out.println("loginUserName: " + userSession.getLoginUsername());
+        System.out.println("authMethod: " + userSession.getAuthMethod());
+        System.out.println("userId: " + userSession.getUser().getId());
+        System.out.println("userEmail: " + userSession.getUser().getEmail());
         System.out.println(bearerToken);
         System.out.println("***************************************");
 
