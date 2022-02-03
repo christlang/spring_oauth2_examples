@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>de.synyx.cl.oauth.example</groupId>
-	<artifactId>ServiceB</artifactId>
+	<artifactId>ServiceC</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>

@@ -1,4 +1,4 @@
-package de.synyx.cl.oauth.examples.service.b;
+package de.synyx.cl.oauth.examples.service.c;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +12,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ServiceBController {
+public class ServiceCController {
 
-    private final Logger log = LoggerFactory.getLogger(ServiceBController.class);
+    private final Logger log = LoggerFactory.getLogger(ServiceCController.class);
 
+    // http://192.168.178.37:8083/api?userEmail=lange%2B2@synyx.de
     @GetMapping("/api")
-    public String api(Principal principal) {
-        log.info(principal.toString());
-        return "{\"answer\": 42}";
+    public Map<String, Boolean> api(String userEmail, Principal principal) {
+        log.info("principal {}", principal.toString());
+        log.info("name {}", principal.getName());
+        log.info("email {}", userEmail);
+
+
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("rightA", true);
+        map.put("rightB", false);
+        map.put("rightC", true);
+        return map;
     }
 
     @GetMapping("/info")
@@ -28,7 +37,7 @@ public class ServiceBController {
         Map<String, String> map = new HashMap<>();
         if (principal instanceof JwtAuthenticationToken) {
             JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) principal;
-            map.put("clientId", jwtToken.getTokenAttributes().get("clientId").toString());
+            map.put("clientId", jwtToken.getTokenAttributes().get("azp").toString());
         }
 
         map.put("name", principal.getName());
